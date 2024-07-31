@@ -16,21 +16,19 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ControlsOptionsScreen.class)
-public class ControlsOptionsScreenMixin extends GameOptionsScreen{
-
-    @Shadow @Nullable private OptionListWidget optionListWidget;
+public abstract class ControlsOptionsScreenMixin extends GameOptionsScreen{
 
     public ControlsOptionsScreenMixin(Screen parent, GameOptions gameOptions, Text title) {
         super(parent, gameOptions, title);
     }
 
 
-    @Inject(method = "init", at = @At(value = "TAIL"))
+    @Inject(method = "addOptions", at = @At(value = "TAIL"))
     public void addMacCommandToControl(CallbackInfo ci) {
         if (MinecraftClient.IS_SYSTEM_MAC)
-            optionListWidget.addAll(RebindAllTheKeys.doubleTapSprint, RebindAllTheKeys.doubleTapFly, RebindAllTheKeys.macCommandToControl);
+            body.addAll(RebindAllTheKeys.doubleTapSprint, RebindAllTheKeys.doubleTapFly, RebindAllTheKeys.macCommandToControl);
         else
-            optionListWidget.addAll(RebindAllTheKeys.doubleTapSprint, RebindAllTheKeys.doubleTapFly);
+            body.addAll(RebindAllTheKeys.doubleTapSprint, RebindAllTheKeys.doubleTapFly);
     }
 
     @Redirect(method = "getOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/GameOptions;getSprintToggled()Lnet/minecraft/client/option/SimpleOption;"))

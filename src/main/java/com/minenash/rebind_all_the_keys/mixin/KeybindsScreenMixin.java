@@ -23,7 +23,7 @@ import static com.minenash.rebind_all_the_keys.RebindAllTheKeys.SCROLL_RIGHT;
 
 @Environment(EnvType.CLIENT)
 @Mixin(KeybindsScreen.class)
-public class KeybindsScreenMixin extends GameOptionsScreen {
+public abstract class KeybindsScreenMixin extends GameOptionsScreen {
 
     @Shadow @Nullable public KeyBinding selectedKeyBinding;
 
