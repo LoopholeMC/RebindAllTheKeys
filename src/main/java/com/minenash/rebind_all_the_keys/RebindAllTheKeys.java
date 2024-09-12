@@ -36,23 +36,29 @@ public class RebindAllTheKeys implements ClientModInitializer {
 	public static final SimpleOption<Boolean> doubleTapSprint = SimpleOption.ofBoolean("rebind_all_the_keys.controls.doubleTapSprint", true);
 	public static final SimpleOption<Boolean> doubleTapFly = SimpleOption.ofBoolean("rebind_all_the_keys.controls.doubleTapFly", true);
 
-	public enum SneakSprintMode implements StringIdentifiable {
+	public enum SneakMode implements StringIdentifiable {
+		HOLD("options.key.hold"), PERSISTENT("rebind_all_the_keys.key.persistent"), TOGGLE("options.key.toggle"), GROUNDED("rebind_all_the_keys.key.ground");
+		public final Text text;
+		SneakMode(String k) { text=Text.translatable(k); }
+		@Override public String asString() { return name(); }
+	}
+	public enum SprintMode implements StringIdentifiable {
 		HOLD("options.key.hold"), PERSISTENT("rebind_all_the_keys.key.persistent"), TOGGLE("options.key.toggle");
 		public final Text text;
-		SneakSprintMode(String k) { text=Text.translatable(k); }
+		SprintMode(String k) { text=Text.translatable(k); }
 		@Override public String asString() { return name(); }
 	}
 
-	public static final SimpleOption<SneakSprintMode> expandedSneak = new SimpleOption<>("key.sneak", SimpleOption.emptyTooltip(),
+	public static final SimpleOption<SneakMode> expandedSneak = new SimpleOption<>("key.sneak", SimpleOption.emptyTooltip(),
 			(optionText, value) -> value.text,
-			new SimpleOption.PotentialValuesBasedCallbacks<>(List.of(SneakSprintMode.values()), StringIdentifiable.createCodec(SneakSprintMode::values)),
-			SneakSprintMode.HOLD,
-			(value) -> CLIENT.options.getSneakToggled().setValue( value != SneakSprintMode.HOLD ));
-	public static final SimpleOption<SneakSprintMode> expandedSprint = new SimpleOption<>("key.sprint", SimpleOption.emptyTooltip(),
+			new SimpleOption.PotentialValuesBasedCallbacks<>(List.of(SneakMode.values()), StringIdentifiable.createCodec(SneakMode::values)),
+			SneakMode.HOLD,
+			(value) -> CLIENT.options.getSneakToggled().setValue( value != SneakMode.HOLD ));
+	public static final SimpleOption<SprintMode> expandedSprint = new SimpleOption<>("key.sprint", SimpleOption.emptyTooltip(),
 			(optionText, value) -> value.text,
-			new SimpleOption.PotentialValuesBasedCallbacks<>(List.of(SneakSprintMode.values()), StringIdentifiable.createCodec(SneakSprintMode::values)),
-			SneakSprintMode.PERSISTENT,
-			(value) -> CLIENT.options.getSprintToggled().setValue(value == SneakSprintMode.TOGGLE));
+			new SimpleOption.PotentialValuesBasedCallbacks<>(List.of(SprintMode.values()), StringIdentifiable.createCodec(SprintMode::values)),
+			SprintMode.PERSISTENT,
+			(value) -> CLIENT.options.getSprintToggled().setValue(value == SprintMode.TOGGLE));
 
 	public static boolean dontDisableSprint = false;
 

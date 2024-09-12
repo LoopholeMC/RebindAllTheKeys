@@ -13,18 +13,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(KeyboardInput.class)
 public class KeyboardInputMixin extends Input {
-
-    @Unique
-    private static boolean movedPriorCheck = false;
+    @Unique private static final MinecraftClient client = MinecraftClient.getInstance();
+    @Unique private static boolean movedPriorCheck = false;
+    @Unique private static boolean offGroundPriorCheck = false;
 
     @Inject(method = "tick", at = @At(value = "INVOKE", ordinal = 5, target = "Lnet/minecraft/client/option/KeyBinding;isPressed()Z"))
     private void persistentSneak(boolean slowDown, float slowDownFactor, CallbackInfo ci) {
         boolean moved = pressingForward || pressingBack || pressingLeft || pressingRight;
+        boolean offGround = client.player.getAbilities().flying || client.player.isSwimming();
 
-        if (RebindAllTheKeys.expandedSneak.getValue() == RebindAllTheKeys.SneakSprintMode.PERSISTENT && !moved && movedPriorCheck)
-            ((StickyKeyBinding)MinecraftClient.getInstance().options.sneakKey).untoggle();
+        if (RebindAllTheKeys.expandedSneak.getValue() == RebindAllTheKeys.SneakMode.PERSISTENT && !moved && movedPriorCheck)
+            ((StickyKeyBinding)client.options.sneakKey).untoggle();
+
+        if (RebindAllTheKeys.expandedSneak.getValue() == RebindAllTheKeys.SneakMode.GROUNDED && offGround && !offGroundPriorCheck)
+            ((StickyKeyBinding)client.options.sneakKey).untoggle();
 
         movedPriorCheck = moved;
+        offGroundPriorCheck = offGround;
     }
 
 }

@@ -11,8 +11,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.function.BooleanSupplier;
 
 
 @Environment(EnvType.CLIENT)
@@ -47,6 +50,13 @@ public abstract class GameOptionsMixin {
         visitor.accept("doubleTapFly", RebindAllTheKeys.doubleTapFly);
         visitor.accept("expandedSprint", RebindAllTheKeys.expandedSprint);
         visitor.accept("expandedSneak", RebindAllTheKeys.expandedSneak);
+    }
+
+    @ModifyArg(method = "<init>", index = 3, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/StickyKeyBinding;<init>(Ljava/lang/String;ILjava/lang/String;Ljava/util/function/BooleanSupplier;)V"))
+    public BooleanSupplier addGroundedToSneak(BooleanSupplier old) {
+        return () -> old.getAsBoolean() &&
+                (RebindAllTheKeys.expandedSneak.getValue() != RebindAllTheKeys.SneakMode.GROUNDED
+                    || client.player != null && client.player.isOnGround());
     }
 
 }
