@@ -37,7 +37,7 @@ public class RebindAllTheKeys implements ClientModInitializer {
 	public static final SimpleOption<Boolean> doubleTapFly = SimpleOption.ofBoolean("rebind_all_the_keys.controls.doubleTapFly", true);
 
 	public enum SneakMode implements StringIdentifiable {
-		HOLD("options.key.hold"), PERSISTENT("rebind_all_the_keys.key.persistent"), TOGGLE("options.key.toggle"), GROUNDED("rebind_all_the_keys.key.ground");
+		HOLD("options.key.hold"), PERSISTENT("rebind_all_the_keys.key.persistent"), TOGGLE("options.key.toggle"), GROUNDED("rebind_all_the_keys.key.grounded");
 		public final Text text;
 		SneakMode(String k) { text=Text.translatable(k); }
 		@Override public String asString() { return name(); }

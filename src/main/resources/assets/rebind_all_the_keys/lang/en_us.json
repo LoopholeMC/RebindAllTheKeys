@@ -42,6 +42,7 @@
   "rebind_all_the_keys.controls.doubleTapSprint": "Double Tap Sprint",
   "rebind_all_the_keys.controls.doubleTapFly": "Double Tap Fly",
   "rebind_all_the_keys.key.persistent": "Persistent",
+  "rebind_all_the_keys.key.grounded": "Grounded",
 
   "key.mouse.101": "Scroll Up",
   "key.mouse.102": "Scroll Down",
