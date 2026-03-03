@@ -1,7 +1,15 @@
+buildscript {
+    dependencies {
+        classpath(fileTree(dir: "${gradle.gradleUserHomeDir}/caches/modules-2/files-2.1", include: ['**/*.jar']))
+    }
+}
+
 plugins {
 	id 'fabric-loom' version '1.11-SNAPSHOT'
 	id 'maven-publish'
 }
+
+apply plugin: 'fabric-loom'
 
 sourceCompatibility = JavaVersion.VERSION_21
 targetCompatibility = JavaVersion.VERSION_21
