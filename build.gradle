@@ -3,8 +3,8 @@ buildscript {
         classpath(fileTree(dir: "${gradle.gradleUserHomeDir}/caches/modules-2/files-2.1", include: ['**/*.jar']))
     }
 }
+
 plugins {
-	id 'fabric-loom' version '1.6-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -18,7 +18,11 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	maven { url = uri("local-maven") }
+	maven {
+		name = "Fabric"
+		url = "https://maven.fabricmc.net/"
+	}
+	mavenCentral()
 }
 
 loom {
@@ -28,10 +32,10 @@ loom {
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-key-binding-api-v1:1.0.47+0af3f5a76a"
 	modImplementation "net.fabricmc.fabric-api:fabric-lifecycle-events-v1:2.3.12+6c1df3606a"
-	}
+}
 
 processResources {
 	inputs.property "version", project.version
