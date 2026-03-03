@@ -27,3 +27,6 @@ bin/
 # fabric
 
 run/
+
+# local maven binaries
+local-maven/**/*.jar
